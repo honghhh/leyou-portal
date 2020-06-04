@@ -105,13 +105,9 @@
             </ul>
             <!--已选择过滤项-->
             <ul class="tags-choose">
-                <li class="tag">
-                    品牌:<span style="color: red">apple</span>
-                    <i class="sui-icon icon-tb-close"></i>
-                </li>
-                <li class="tag">
-                    内存:<span style="color: red">4G</span>
-                    <i class="sui-icon icon-tb-close"></i>
+                <li class="tag" v-for="(v, k) in search.filter">
+                    {{k === 'brandId' ? '品牌' : k}}:<span style="color: red" v-text="findValue(k, v)"></span>
+                    <i class="sui-icon icon-tb-close" @click="deleteFilter(k)"></i>
                 </li>
             </ul>
             <div class="clearfix"></div>
@@ -141,7 +137,7 @@
                     <a href="javascript:void(0);" class="sui-btn">多选</a>
                 </div>
             </div>
-            <div class="type-wrap" style="text-align: center">
+            <div class="type-wrap" style="text-align: center" v-show="remainFilter.length > 5">
                 <v-btn small flat v-show="!showMore" @click="showMore=true">
                     更多<v-icon>arrow_drop_down</v-icon>
                 </v-btn>
@@ -411,6 +407,18 @@
                 const {... obj} = this.search.filter;
                 obj[key] = option;
                 // 添加到search.filter中
+                this.search.filter = obj;
+            },
+            findValue(k, v) {
+                if (!this.filters) {
+                    return;
+                }
+                if (k != 'brandId') return v;
+                return this.filters.find(f => f.k === 'brandId').options[0].name;
+            },
+            deleteFilter(k) {
+                const {... obj} = this.search.filter;
+                delete obj[k];
                 this.search.filter = obj;
             }
         },
