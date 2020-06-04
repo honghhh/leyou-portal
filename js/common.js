@@ -626,4 +626,25 @@ const ly = leyou = {
      * 将请求参数字符串格式化为js对象
      */
     parse,
+    /**
+     * 将网页url地址转为后台可识别的map参数
+     */
+    formatSearchParam(search) {
+        let a = search;
+        let result = a.substring(0, a.indexOf("?") + 1);
+        let subIndex = a.indexOf("?") + 1;
+        let b = a.substring(subIndex);
+        let c = "";
+        b.split("&").forEach(function(val, index){
+            if (val.indexOf("filter.") != -1){
+                let d = val.split("=");
+                let f = d[0].split(".");
+                c += f[0] + "[" + f[1] + "]" + "=" +d[1] + "&";
+            }else{
+                c += val + "&";
+            }
+        });
+        result = result + c.substring(0, c.length - 1);
+        return result;
+    }
 }

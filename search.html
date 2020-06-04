@@ -356,7 +356,7 @@
                       return;
                   }
                   // 把请求参数写到url中
-                  location.search = "?" + ly.stringify(this.search);
+                  location.search = "?" + ly.formatSearchParam(ly.stringify(this.search));
               }
           }
         },
